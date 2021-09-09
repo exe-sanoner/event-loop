@@ -7,3 +7,6 @@ function logSquare(num) {
 }
 
 logSquare(2);
+
+
+// Abriendo consola, aparece el resultado 4

@@ -1,3 +1,6 @@
+// LAS ASYNC SON PROMESAS, PERO CON MEJOR SINTAXIS!!!!
+
+
 const url = "https://jsonplaceholder.typicode.com";
 
 const btnClick = document.getElementById("btn-click");
@@ -35,6 +38,8 @@ btnSlow.onclick = () => getUserInfo(1);
 //     console.log(err);
 //   }
 // }
+
+// ESTO SI PODEMOS DIVIDIRLO EN VARIAS FUNCIONES!!!
 
 const getUser = async (id) => {
   const res = await fetch(`${url}/users?id=${id}`);

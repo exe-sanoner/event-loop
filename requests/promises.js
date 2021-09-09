@@ -1,3 +1,5 @@
+// AHORA USANDO FETCH!!!!
+
 const url = "https://jsonplaceholder.typicode.com";
 
 const btnClick = document.getElementById("btn-click");
@@ -12,7 +14,7 @@ btnSlow.onclick = () => getUserInfo(1);
 
 // const getUserInfo = (id) => {
 //   fetch(`${url}/users?id=${id}`)
-//     .then(res => res.json())
+//     .then(res => res.json())  
 //     .then(users => content.innerHTML += `<h3>User Info</h3><p>${users[0].email}</p>`)
 //     .then(() => fetch(`${url}/posts?userId=${id}&_limit=3`))
 //     .then(res => res.json())
@@ -37,9 +39,9 @@ btnSlow.onclick = () => getUserInfo(1);
 
 const getUser = (id) => (
   fetch(`${url}/users?id=${id}`)
-    .then(res => res.json())
+    .then(res => res.json())    // es como hacer JSON.parse --> corre en otro hilo, no bloquea mas!!!!
     .then(users => {
-      content.innerHTML += `<h3>User Info</h3><p>${users[0].email}</p>`
+      content.innerHTML += `<h3>User Info</h3><p>${users[0].email}</p>` // email del 1er user
       return users[0]
     })
 )
@@ -56,6 +58,8 @@ const getPosts = (user) => {
     })
 }
 
+// Promise.all()  -->  Cuando mapeo cada post a un fetch, y voy a terminar con un Array de Promises. Si todas las promesas tienen exito, lo que hace el Promise.all es generar una microtask con los resultados de esas Promises. Si una falla, me da una Promise fallada
+
 const getComments = (posts) => {
   Promise.all(posts.map(post => 
     fetch(`${url}/comments?postId=${post.id}&_limit=2`)  
@@ -63,7 +67,8 @@ const getComments = (posts) => {
     .then(responses => Promise.all(responses.map(res => res.json())))
     .then(comments => {
       console.log(comments);
-      document.querySelectorAll(".post").forEach((div, i) => {
+      // uso querySelector para seleccionar los posts, porque no tengo acceso al parametro post anterior porque es otro callback aparte!!!!
+      document.querySelectorAll(".post").forEach((div, i) => { 
         div.innerHTML += comments[i].map(comment =>
           `<p><span>${comment.email}</span>: ${comment.body}</p>`  
         ).join('')
